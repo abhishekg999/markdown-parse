@@ -16,7 +16,7 @@ public class MarkdownParse {
         Matcher matcher = pattern.matcher(markdown);
         
         while (matcher.find()) {
-            ret.add(matcher.group(3));
+            ret.add(matcher.group(1));
         }
 
         return ret;
