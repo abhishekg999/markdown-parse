@@ -4,33 +4,22 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class MarkdownParse {
     public static ArrayList<String> getLinks(String markdown) {
-        ArrayList<String> toReturn = new ArrayList<>();
-        // find the next [, then find the ], then find the (, then take up to
-        // the next )                     
-        int currentIndex = 0;
-        while(currentIndex < markdown.length()) {
-            int nextOpenBracket = markdown.indexOf("[", currentIndex);
-            int nextCloseBracket = markdown.indexOf("]", nextOpenBracket);
-            int openParen = markdown.indexOf("(", nextCloseBracket);
-            int closeParen = markdown.indexOf(")", openParen);
-            // first fix: avoid infinite loop
-            if (closeParen == -1 || openParen == -1 || nextCloseBracket == -1 || nextOpenBracket == -1){
-                break;
-            }
-            //second fix: avoid image
-            if (nextOpenBracket != 0 && markdown.substring(nextOpenBracket-1, nextOpenBracket).equals("!")){
-                currentIndex = closeParen + 1;
-                continue;
-            }
-            else{
-                toReturn.add(markdown.substring(openParen + 1, closeParen));
-                currentIndex = closeParen + 1;
-            }
-            
+        ArrayList<String> ret = new ArrayList<>();
+        String regex = "^[^\\\\]*((\\\\\\\\)*[^\\\\]*)\\[\\w\\D+\\]\\((\\w\\D+)\\)";
+        
+        Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
+        Matcher matcher = pattern.matcher(markdown);
+        
+        while (matcher.find()) {
+            ret.add(matcher.group(3));
         }
-        return toReturn;
+
+        return ret;
     }
     public static void main(String[] args) throws IOException {
 		Path fileName = Path.of(args[0]);
