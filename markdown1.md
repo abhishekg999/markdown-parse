@@ -1,6 +1,5 @@
-[link](http://something.com)
-hi
-[link](http://somemorething.com)
-hi
-hi
-[What][Is][This][?]
+[a [nested link](a.com)](b.com)
+
+[a nested parenthesized url](a.com(()))
+
+[some escaped \[ brackets \]](example.com)

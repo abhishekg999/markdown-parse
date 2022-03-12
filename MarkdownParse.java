@@ -10,8 +10,7 @@ import java.util.regex.Pattern;
 public class MarkdownParse {
     public static ArrayList<String> getLinks(String markdown) {
         ArrayList<String> ret = new ArrayList<>();
-        String regex = "(?<![!\\\\])\\[.+\\]\\((.*)\\)";
-        
+        String regex =  "(?<![!\\\\])\\[(?:[a-zA-Z_ ]+(?:\\\\[\\[\\]\\(\\)\\!`]+)*)+[a-zA-Z]*\\]\\((.*?|\\n.+?|.+?\\n|\\n.+?\\n)\\)";
         Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
         Matcher matcher = pattern.matcher(markdown);
         
